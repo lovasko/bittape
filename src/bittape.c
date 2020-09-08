@@ -27,9 +27,6 @@ bittape_new(struct bittape* bit, const BITTAPE_LEN max)
   bit->bt_max = max;
 }
 
-#define xstr(x) str(x)
-#define str(x) #x
-
 /// Perform a write within a single word.
 ///
 /// @param[in] bit bit tape
