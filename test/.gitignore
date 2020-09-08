@@ -1,0 +1,14 @@
+bin/sunit8
+bin/sunit16
+bin/sunit32
+bin/sunit64
+
+bin/lunit8
+bin/lunit16
+bin/lunit32
+bin/lunit64
+
+bin/prop8
+bin/prop16
+bin/prop32
+bin/prop64
