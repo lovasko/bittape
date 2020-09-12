@@ -11,7 +11,6 @@
 #include <time.h>
 #include <inttypes.h>
 
-#define BITTAPE_BUF
 #include "bittape.h"
 
 

@@ -19,16 +19,16 @@ set -e
 mkdir -p bin
 
 # Compile the property tests in four bit widths.
-${C99} ${STD} ${FLG} ${OPT} ${INC} -DTEST_LEN=16    -DBITTAPE_BIT=8  \
+${C99} ${STD} ${FLG} ${OPT} ${INC} -DBITTAPE_BUF    -DBITTAPE_BIT=8  -DTEST_LEN=16 \
   -o bin/prop8   src/prop.c ../src/bittape.c
 
-${C99} ${STD} ${FLG} ${OPT} ${INC} -DTEST_LEN=16    -DBITTAPE_BIT=16 \
+${C99} ${STD} ${FLG} ${OPT} ${INC} -DBITTAPE_BUF    -DBITTAPE_BIT=16 -DTEST_LEN=16 \
   -o bin/prop16  src/prop.c ../src/bittape.c
 
-${C99} ${STD} ${FLG} ${OPT} ${INC} -DTEST_LEN=16    -DBITTAPE_BIT=32 \
+${C99} ${STD} ${FLG} ${OPT} ${INC} -DBITTAPE_BUF    -DBITTAPE_BIT=32 -DTEST_LEN=16 \
   -o bin/prop32  src/prop.c ../src/bittape.c
 
-${C99} ${STD} ${FLG} ${OPT} ${INC} -DTEST_LEN=16    -DBITTAPE_BIT=64 \
+${C99} ${STD} ${FLG} ${OPT} ${INC} -DBITTAPE_BUF    -DBITTAPE_BIT=64 -DTEST_LEN=16 \
   -o bin/prop64  src/prop.c ../src/bittape.c
 
 # Compile and unit test program for small inputs.
