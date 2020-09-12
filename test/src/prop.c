@@ -105,7 +105,11 @@ gen_ops(bool* ops)
   }
 }
 
-/// Print the 
+/// Print the current test case as a command for the large unit test program.
+///
+/// @param[in] val words
+/// @param[in] cnt bit counts
+/// @param[in] ops operations
 static void
 unit(const BITTAPE_WORD *restrict val, const BITTAPE_LEN *restrict cnt, const bool* ops)
 {
