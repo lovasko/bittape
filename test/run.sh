@@ -65,22 +65,22 @@ bin/sunit8 -G1
 bin/sunit8 -G2       -G3
 bin/sunit8 -p1:1     -g1:1
 bin/sunit8 -p1:1     -g1:1    -G1
-bin/sunit8 -p2:3     -p3:2    -g2:3   -g3:2
-bin/sunit8 -p2:3     -g2:3    -p3:2   -g3:2
-bin/sunit8 -p5:21    -p5:10   -g5:21  -g5:10
+bin/sunit8 -p2:3     -p3:2    -g2:3    -g3:2
+bin/sunit8 -p2:3     -g2:3    -p3:2    -g3:2
+bin/sunit8 -p5:21    -p5:10   -g5:21   -g5:10
 bin/sunit8 -p8:255   -p8:255  -P1
-bin/sunit8 -p3:2     -G5      -G4     -g3:2
+bin/sunit8 -p3:2     -G5      -G4      -g3:2
 
 # Run the 16-bit unit tests.
 bin/sunit16 -G1
 bin/sunit16 -G2      -G3
 bin/sunit16 -p1:1    -g1:1
 bin/sunit16 -p1:1    -g1:1    -G1
-bin/sunit16 -p2:3    -p3:2    -g2:3   -g3:2
-bin/sunit16 -p2:3    -g2:3    -p3:2   -g3:2
-bin/sunit16 -p9:341  -p9:170  -g9:341 -g9:170
+bin/sunit16 -p2:3    -p3:2    -g2:3    -g3:2
+bin/sunit16 -p2:3    -g2:3    -p3:2    -g3:2
+bin/sunit16 -p9:341  -p9:170  -g9:341  -g9:170
 bin/sunit16 -p16:255 -p16:255 -P1
-bin/sunit16 -p3:2    -G5      -G4     -g3:2
+bin/sunit16 -p3:2    -G5      -G4      -g3:2
 
 # Run the 32-bit unit tests.
 bin/sunit32 -G1
