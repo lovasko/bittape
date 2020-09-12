@@ -65,7 +65,7 @@ gen_cnt(BITTAPE_LEN *restrict cnt, BITTAPE_WORD *restrict val)
 }
 
 /// Generate the random order of reads and writes to the tape.
-/// 
+///
 /// Throughout the program the following mapping is assumed:
 ///   * read  = 0 = false
 ///   * write = 1 = true
@@ -137,7 +137,7 @@ unit(const BITTAPE_WORD *restrict val, const BITTAPE_LEN *restrict cnt, const bo
 /// @param[in] val values
 /// @param[in] cnt bit counts
 /// @param[in] ops operations
-static bool 
+static bool
 run(struct bittape *restrict bit, BITTAPE_WORD *restrict val, BITTAPE_LEN *restrict cnt, bool* ops)
 {
   uintmax_t   pos[2];

@@ -56,7 +56,7 @@ put(struct bittape* bit, const BITTAPE_WORD val, const BITTAPE_LEN cnt)
 ///
 /// @param[in] bit bit tape
 /// @param[in] len number of bits to write
-/// @param[in] val word to write 
+/// @param[in] val word to write
 bool
 bittape_put(struct bittape* bit, const BITTAPE_LEN cnt, const BITTAPE_WORD val)
 {
@@ -90,7 +90,7 @@ bittape_put(struct bittape* bit, const BITTAPE_LEN cnt, const BITTAPE_WORD val)
 ///
 /// @param[in] bit bit tape
 /// @param[in] cnt number of bits
-static BITTAPE_WORD 
+static BITTAPE_WORD
 get(struct bittape* bit, const BITTAPE_LEN cnt)
 {
   BITTAPE_LEN  idx;

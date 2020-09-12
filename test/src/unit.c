@@ -114,7 +114,7 @@ tape_str(const struct bittape* bit)
 {
   uintmax_t idx;
   uintmax_t jdx;
-  uintmax_t kdx; 
+  uintmax_t kdx;
   char      str[CHAR_BIT];
 
   for (idx = 0; idx < BITTAPE_BUF; idx += 1) {
