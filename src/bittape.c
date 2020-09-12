@@ -30,13 +30,13 @@ bittape_new(struct bittape* bit, const BITTAPE_LEN max)
 /// Perform a write within a single word.
 ///
 /// @param[in] bit bit tape
-/// @param[in] val value to write
+/// @param[in] val word to write
 /// @param[in] cnt number of bits
 static void
-put(struct bittape* bit, const BITTAPE_INT val, const BITTAPE_LEN cnt)
+put(struct bittape* bit, const BITTAPE_WORD val, const BITTAPE_LEN cnt)
 {
-  BITTAPE_INT idx;
-  BITTAPE_INT off;
+  BITTAPE_LEN idx;
+  BITTAPE_LEN off;
 
   // Compute the current writing word index.
   idx = bit->bt_put / BITTAPE_BIT;
@@ -45,7 +45,7 @@ put(struct bittape* bit, const BITTAPE_INT val, const BITTAPE_LEN cnt)
   off = bit->bt_put % BITTAPE_BIT;
 
   // Write the requested bits.
-  bit->bt_buf[idx] |= ((BITTAPE_INT)val << off);
+  bit->bt_buf[idx] |= ((BITTAPE_WORD)val << off);
 
   // Advance the writing head.
   bit->bt_put += cnt;
@@ -56,13 +56,13 @@ put(struct bittape* bit, const BITTAPE_INT val, const BITTAPE_LEN cnt)
 ///
 /// @param[in] bit bit tape
 /// @param[in] len number of bits to write
-/// @param[in] val bits to write 
+/// @param[in] val word to write 
 bool
-bittape_put(struct bittape* bit, const BITTAPE_LEN cnt, const BITTAPE_INT val)
+bittape_put(struct bittape* bit, const BITTAPE_LEN cnt, const BITTAPE_WORD val)
 {
-  BITTAPE_INT spl; // Split index between the two words.
-  BITTAPE_INT pos; // Bit index within the current word.
-  BITTAPE_INT adj; // Adjusted bit index after the write.
+  BITTAPE_LEN spl; // Split index between the two words.
+  BITTAPE_LEN pos; // Bit index within the current word.
+  BITTAPE_LEN adj; // Adjusted bit index after the write.
 
   // Ensure that the tape has sufficient space for the requested bits.
   if (bit->bt_put + cnt > bit->bt_max) {
@@ -90,12 +90,12 @@ bittape_put(struct bittape* bit, const BITTAPE_LEN cnt, const BITTAPE_INT val)
 ///
 /// @param[in] bit bit tape
 /// @param[in] cnt number of bits
-static BITTAPE_INT 
+static BITTAPE_WORD 
 get(struct bittape* bit, const BITTAPE_LEN cnt)
 {
-  BITTAPE_INT idx;
-  BITTAPE_INT off;
-  BITTAPE_INT val;
+  BITTAPE_LEN  idx;
+  BITTAPE_LEN  off;
+  BITTAPE_WORD val;
 
   // Compute the current reading word index.
   idx = bit->bt_get / BITTAPE_BIT;
@@ -108,7 +108,7 @@ get(struct bittape* bit, const BITTAPE_LEN cnt)
 
   // Remove all unwanted higher bits.
   if (cnt < BITTAPE_BIT) {
-    val &= ((BITTAPE_INT)1 << cnt) - 1;
+    val &= ((BITTAPE_WORD)1 << cnt) - 1;
   }
 
   // Advance the reading head.
@@ -124,11 +124,11 @@ get(struct bittape* bit, const BITTAPE_LEN cnt)
 /// @param[in]  cnt number of bits to read
 /// @param[out] val read bits
 bool
-bittape_get(struct bittape* bit, const BITTAPE_LEN cnt, BITTAPE_INT* val)
+bittape_get(struct bittape* bit, const BITTAPE_LEN cnt, BITTAPE_WORD* val)
 {
-  BITTAPE_INT spl;
-  BITTAPE_INT pos;
-  BITTAPE_INT adj;
+  BITTAPE_LEN spl;
+  BITTAPE_LEN pos;
+  BITTAPE_LEN adj;
 
   // Ensure that the tape has requested number of bits available.
   if (bit->bt_get + cnt > bit->bt_put) {

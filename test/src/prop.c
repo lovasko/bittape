@@ -29,15 +29,15 @@
 ///
 /// @param[out] val values
 static void
-gen_val(BITTAPE_INT* val)
+gen_val(BITTAPE_WORD* val)
 {
   uintmax_t idx;
   uintmax_t jdx;
-  uint8_t   oct[sizeof(BITTAPE_INT)];
+  uint8_t   oct[sizeof(BITTAPE_WORD)];
 
   for (idx = 0; idx < TEST_LEN; idx += 1) {
     // Generate random bytes.
-    for (jdx = 0; jdx < sizeof(BITTAPE_INT); jdx += 1) {
+    for (jdx = 0; jdx < sizeof(BITTAPE_WORD); jdx += 1) {
       oct[jdx] = rand() % 256;
     }
 
@@ -51,16 +51,16 @@ gen_val(BITTAPE_INT* val)
 /// @param[out] cnt bit counts
 /// @param[out] val values
 static void
-gen_cnt(BITTAPE_INT *restrict cnt, BITTAPE_INT *restrict val)
+gen_cnt(BITTAPE_LEN *restrict cnt, BITTAPE_WORD *restrict val)
 {
   uintmax_t idx;
 
   for (idx = 0; idx < TEST_LEN; idx += 1) {
-    // Random number of bits between 0 and the size of BITTAPE_INT in bits.
-    cnt[idx] = (rand() % (sizeof(BITTAPE_INT) * CHAR_BIT)) + 1;
+    // Random number of bits between 0 and the size of BITTAPE_WORD in bits.
+    cnt[idx] = (rand() % (sizeof(BITTAPE_WORD) * CHAR_BIT)) + 1;
 
     // Cull the higher bits of the respective value accordingly.
-    val[idx] &= (1 << cnt[idx]) - 1;
+    val[idx] &= ((BITTAPE_WORD)1 << cnt[idx]) - 1;
   }
 }
 
@@ -107,7 +107,7 @@ gen_ops(bool* ops)
 
 /// Print the 
 static void
-unit(const BITTAPE_INT *restrict val, const BITTAPE_INT *restrict cnt, const bool* ops)
+unit(const BITTAPE_WORD *restrict val, const BITTAPE_LEN *restrict cnt, const bool* ops)
 {
   uintmax_t put;
   uintmax_t get;
@@ -138,11 +138,11 @@ unit(const BITTAPE_INT *restrict val, const BITTAPE_INT *restrict cnt, const boo
 /// @param[in] cnt bit counts
 /// @param[in] ops operations
 static bool 
-run(struct bittape *restrict bit, BITTAPE_INT *restrict val, BITTAPE_INT *restrict cnt, bool* ops)
+run(struct bittape *restrict bit, BITTAPE_WORD *restrict val, BITTAPE_LEN *restrict cnt, bool* ops)
 {
   uintmax_t   pos[2];
   uintmax_t   idx;
-  BITTAPE_INT get;
+  BITTAPE_WORD get;
   bool        ret;
 
   // Generate test data.
@@ -152,8 +152,8 @@ run(struct bittape *restrict bit, BITTAPE_INT *restrict val, BITTAPE_INT *restri
 
   // Initialise the bit tape.
   (void)memset(bit, 0, sizeof(*bit));
-  (void)memset(bit->bt_buf, 0, TEST_LEN * sizeof(BITTAPE_INT));
-  bittape_new(bit, TEST_LEN * sizeof(BITTAPE_INT) * CHAR_BIT);
+  (void)memset(bit->bt_buf, 0, TEST_LEN * sizeof(BITTAPE_WORD));
+  bittape_new(bit, TEST_LEN * sizeof(BITTAPE_WORD) * CHAR_BIT);
 
   // Both reading and writing positions start at the beginning.
   pos[0] = 0;
@@ -202,15 +202,15 @@ int
 main(void)
 {
   struct bittape* bit;
-  BITTAPE_INT*    val;
-  BITTAPE_INT*    cnt;
+  BITTAPE_WORD*   val;
+  BITTAPE_LEN*    cnt;
   bool*           ops;
   uintmax_t       rep;
   time_t          now;
   bool            ret;
 
   // Allocate memory for the bit tape.
-  bit = malloc(sizeof(struct bittape) + (sizeof(BITTAPE_INT) * TEST_LEN));
+  bit = malloc(sizeof(struct bittape) + (sizeof(BITTAPE_WORD) * TEST_LEN));
 
   // Allocate memory for the testing data.
   val = malloc(sizeof(*val) * TEST_LEN);

@@ -21,10 +21,10 @@
 /// @param[in] cnt number of bits
 /// @param[in] exp expected bits
 static bool
-succ_get(struct bittape* bit, const BITTAPE_INT cnt, const BITTAPE_INT exp)
+succ_get(struct bittape* bit, const BITTAPE_LEN cnt, const BITTAPE_WORD exp)
 {
-  BITTAPE_INT act;
-  bool        ret;
+  BITTAPE_WORD act;
+  bool         ret;
 
   // Perform the read.
   ret = bittape_get(bit, cnt, &act);
@@ -51,10 +51,10 @@ succ_get(struct bittape* bit, const BITTAPE_INT cnt, const BITTAPE_INT exp)
 /// @param[in] bit bit tape
 /// @param[in] cnt number of bits
 static bool
-fail_get(struct bittape* bit, const BITTAPE_INT cnt)
+fail_get(struct bittape* bit, const BITTAPE_LEN cnt)
 {
-  BITTAPE_INT val;
-  bool        ret;
+  BITTAPE_WORD val;
+  bool         ret;
 
   ret = bittape_get(bit, cnt, &val);
   if (ret == true) {
@@ -72,7 +72,7 @@ fail_get(struct bittape* bit, const BITTAPE_INT cnt)
 /// @param[in] cnt number of bits
 /// @param[in] val bits
 static bool
-succ_put(struct bittape* bit, const BITTAPE_INT cnt, const BITTAPE_INT val)
+succ_put(struct bittape* bit, const BITTAPE_LEN cnt, const BITTAPE_WORD val)
 {
   bool ret;
 
@@ -91,10 +91,10 @@ succ_put(struct bittape* bit, const BITTAPE_INT cnt, const BITTAPE_INT val)
 /// @param[in] bit bit tape
 /// @param[in] cnt number of bits
 static bool
-fail_put(struct bittape* bit, const BITTAPE_INT cnt)
+fail_put(struct bittape* bit, const BITTAPE_LEN cnt)
 {
-  BITTAPE_INT val;
-  bool ret;
+  BITTAPE_WORD val;
+  bool         ret;
 
   val = 0;
   ret = bittape_put(bit, cnt, val);
@@ -118,17 +118,17 @@ tape_str(const struct bittape* bit)
   char      str[CHAR_BIT];
 
   for (idx = 0; idx < BITTAPE_BUF; idx += 1) {
-    for (jdx = 0; jdx < sizeof(BITTAPE_INT); jdx += 1) {
+    for (jdx = 0; jdx < sizeof(BITTAPE_WORD); jdx += 1) {
       // Convert a byte to a string.
       for (kdx = 0; kdx < CHAR_BIT; kdx += 1) {
-        str[kdx] = bit->bt_buf[idx] & ((BITTAPE_INT)1 << (jdx * CHAR_BIT + kdx)) ? '1' : '0';
+        str[kdx] = bit->bt_buf[idx] & ((BITTAPE_WORD)1 << (jdx * CHAR_BIT + kdx)) ? '1' : '0';
       }
 
       // Print the string with a delimiter in the middle.
       (void)printf("%c%c%c%c-%c%c%c%c", str[0], str[1], str[2], str[3], str[4], str[5], str[6], str[7]);
 
       // Connect the bytes within a word with an underscore.
-      if (jdx != (sizeof(BITTAPE_INT) - 1)) {
+      if (jdx != (sizeof(BITTAPE_WORD) - 1)) {
         (void)printf("_");
       }
     }
@@ -184,14 +184,14 @@ main(int argc, char* argv[])
 
     // Execute the appropriate command.
     if (opt == 'p') {
-      ret = succ_put(&bit, (BITTAPE_INT)cnt, (BITTAPE_INT)val);
+      ret = succ_put(&bit, (BITTAPE_INT)cnt, (BITTAPE_WORD)val);
       if (ret == false) {
         return EXIT_FAILURE;
       }
     }
 
     if (opt == 'g') {
-      ret = succ_get(&bit, (BITTAPE_INT)cnt, (BITTAPE_INT)val);
+      ret = succ_get(&bit, (BITTAPE_INT)cnt, (BITTAPE_WORD)val);
       if (ret == false) {
         return EXIT_FAILURE;
       }

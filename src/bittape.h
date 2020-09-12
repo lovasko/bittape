@@ -13,13 +13,13 @@
 
 // Select the appropriate word type.
 #if   BITTAPE_BIT == 8
-  #define BITTAPE_INT uint8_t
+  #define BITTAPE_WORD uint8_t
 #elif BITTAPE_BIT == 16
-  #define BITTAPE_INT uint16_t
+  #define BITTAPE_WORD uint16_t
 #elif BITTAPE_BIT == 32
-  #define BITTAPE_INT uint32_t
+  #define BITTAPE_WORD uint32_t
 #elif BITTAPE_BIT == 64
-  #define BITTAPE_INT uint64_t
+  #define BITTAPE_WORD uint64_t
 #else
   #error "BITTAPE_BIT has unsupported value"
 #endif
@@ -44,12 +44,12 @@ struct bittape {
   BITTAPE_LEN bt_get;              ///< Reading position in bits.
   BITTAPE_LEN bt_put;              ///< Writing position in bits.
   BITTAPE_LEN bt_max;              ///< Maximal number of bits.
-  BITTAPE_INT bt_buf[BITTAPE_BUF]; ///< Bits storage.
+  BITTAPE_WORD bt_buf[BITTAPE_BUF]; ///< Bits storage.
 };
 
 // Operations.
 void bittape_new(struct bittape* bit, const BITTAPE_LEN max);
-bool bittape_put(struct bittape* bit, const BITTAPE_LEN cnt, const BITTAPE_INT val);
-bool bittape_get(struct bittape* bit, const BITTAPE_LEN cnt, BITTAPE_INT* val);
+bool bittape_put(struct bittape* bit, const BITTAPE_LEN cnt, const BITTAPE_WORD val);
+bool bittape_get(struct bittape* bit, const BITTAPE_LEN cnt, BITTAPE_WORD* val);
 
 #endif
