@@ -186,7 +186,7 @@ run(struct bittape *restrict bit, BITTAPE_WORD *restrict val, BITTAPE_LEN *restr
       if (get != val[pos[0]]) {
         (void)printf("mismatch: %" PRIuMAX " %" PRIuMAX "\n",
           (uintmax_t)get, (uintmax_t)val[pos[0]]);
-	unit(val, cnt, ops);
+        unit(val, cnt, ops);
         return false;
       }
 

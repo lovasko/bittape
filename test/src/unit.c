@@ -178,7 +178,7 @@ main(int argc, char* argv[])
       mtc = sscanf(optarg, "%" SCNuMAX, &cnt);
       if (mtc != 1) {
         (void)printf("unable to parse the command parameter: '%s'\n", optarg);
-	return EXIT_FAILURE;
+        return EXIT_FAILURE;
       }
     }
 
