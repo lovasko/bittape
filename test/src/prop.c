@@ -136,12 +136,12 @@ unit(const BITTAPE_WORD *restrict val, const BITTAPE_LEN *restrict cnt, const bo
 /// Run a single instance of the test.
 /// @return success/failure indication
 ///
-/// @param[in] bit bit tape
+/// @param[in] tape bit tape
 /// @param[in] val values
 /// @param[in] cnt bit counts
 /// @param[in] ops operations
 static bool
-run(struct bittape *restrict bit, BITTAPE_WORD *restrict val, BITTAPE_LEN *restrict cnt, bool* ops)
+run(struct bittape *restrict tape, BITTAPE_WORD *restrict val, BITTAPE_LEN *restrict cnt, bool* ops)
 {
   uintmax_t   pos[2];
   uintmax_t   idx;
@@ -154,9 +154,9 @@ run(struct bittape *restrict bit, BITTAPE_WORD *restrict val, BITTAPE_LEN *restr
   gen_ops(ops);
 
   // Initialise the bit tape.
-  (void)memset(bit, 0, sizeof(*bit));
-  (void)memset(bit->bt_buf, 0, TEST_LEN * sizeof(BITTAPE_WORD));
-  bittape_new(bit, TEST_LEN * sizeof(BITTAPE_WORD) * CHAR_BIT);
+  (void)memset(tape, 0, sizeof(*tape));
+  (void)memset(tape->bt_buf, 0, TEST_LEN * sizeof(BITTAPE_WORD));
+  bittape_new(tape, TEST_LEN * sizeof(BITTAPE_WORD) * CHAR_BIT);
 
   // Both reading and writing positions start at the beginning.
   pos[0] = 0;
@@ -167,7 +167,7 @@ run(struct bittape *restrict bit, BITTAPE_WORD *restrict val, BITTAPE_LEN *restr
     // Perform a write.
     if (ops[idx] == true) {
       // Write bits to the tape.
-      ret = bittape_put(bit, cnt[pos[1]], val[pos[1]]);
+      ret = bittape_put(tape, cnt[pos[1]], val[pos[1]]);
       if (ret == false) {
         printf("put failed\n");
         return false;
@@ -179,7 +179,7 @@ run(struct bittape *restrict bit, BITTAPE_WORD *restrict val, BITTAPE_LEN *restr
     // Perform a read and verify its correctness.
     } else {
       // Read bits off the tape.
-      ret = bittape_get(bit, cnt[pos[0]], &get);
+      ret = bittape_get(tape, cnt[pos[0]], &get);
       if (ret == false) {
         printf("get failed\n");
         return false;
@@ -204,7 +204,7 @@ run(struct bittape *restrict bit, BITTAPE_WORD *restrict val, BITTAPE_LEN *restr
 int
 main(void)
 {
-  struct bittape* bit;
+  struct bittape* tape;
   BITTAPE_WORD*   val;
   BITTAPE_LEN*    cnt;
   bool*           ops;
@@ -213,7 +213,7 @@ main(void)
   bool            ret;
 
   // Allocate memory for the bit tape.
-  bit = malloc(sizeof(struct bittape) + (sizeof(BITTAPE_WORD) * TEST_LEN));
+  tape = malloc(sizeof(struct bittape) + (sizeof(BITTAPE_WORD) * TEST_LEN));
 
   // Allocate memory for the testing data.
   val = malloc(sizeof(*val) * TEST_LEN);
@@ -225,14 +225,14 @@ main(void)
   srand(now);
   ret = true;
   for (rep = 0; rep < TEST_REP; rep += 1) {
-    ret = run(bit, val, cnt, ops);
+    ret = run(tape, val, cnt, ops);
     if (ret == false) {
       break;
     }
   }
 
   // Deallocate all used memory.
-  free(bit);
+  free(tape);
   free(val);
   free(cnt);
   free(ops);

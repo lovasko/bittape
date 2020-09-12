@@ -17,17 +17,17 @@
 /// Perform a take read that ought to succeed.
 /// @return success/failure indication
 ///
-/// @param[in] bit bit tape
-/// @param[in] cnt number of bits
-/// @param[in] exp expected bits
+/// @param[in] tape bit tape
+/// @param[in] cnt  number of bits
+/// @param[in] exp  expected bits
 static bool
-succ_get(struct bittape* bit, const BITTAPE_LEN cnt, const BITTAPE_WORD exp)
+succ_get(struct bittape* tape, const BITTAPE_LEN cnt, const BITTAPE_WORD exp)
 {
   BITTAPE_WORD act;
   bool         ret;
 
   // Perform the read.
-  ret = bittape_get(bit, cnt, &act);
+  ret = bittape_get(tape, cnt, &act);
   if (ret == false) {
     (void)printf("get failed\n");
     return false;
@@ -48,15 +48,15 @@ succ_get(struct bittape* bit, const BITTAPE_LEN cnt, const BITTAPE_WORD exp)
 /// Perform a tape read that ought to fail.
 /// @return success/failure indication
 ///
-/// @param[in] bit bit tape
-/// @param[in] cnt number of bits
+/// @param[in] tape bit tape
+/// @param[in] cnt  number of bits
 static bool
-fail_get(struct bittape* bit, const BITTAPE_LEN cnt)
+fail_get(struct bittape* tape, const BITTAPE_LEN cnt)
 {
   BITTAPE_WORD val;
   bool         ret;
 
-  ret = bittape_get(bit, cnt, &val);
+  ret = bittape_get(tape, cnt, &val);
   if (ret == true) {
     (void)printf("get succeeded but was supposed to fail\n");
     return false;
@@ -68,15 +68,15 @@ fail_get(struct bittape* bit, const BITTAPE_LEN cnt)
 /// Perform a tape write that ought to succeed.
 /// @return success/failure indication
 ///
-/// @param[in] bit bit tape
-/// @param[in] cnt number of bits
-/// @param[in] val bits
+/// @param[in] tape bit tape
+/// @param[in] cnt  number of bits
+/// @param[in] val  bits
 static bool
-succ_put(struct bittape* bit, const BITTAPE_LEN cnt, const BITTAPE_WORD val)
+succ_put(struct bittape* tape, const BITTAPE_LEN cnt, const BITTAPE_WORD val)
 {
   bool ret;
 
-  ret = bittape_put(bit, cnt, val);
+  ret = bittape_put(tape, cnt, val);
   if (ret == false) {
     (void)printf("put failed\n");
     return false;
@@ -88,16 +88,16 @@ succ_put(struct bittape* bit, const BITTAPE_LEN cnt, const BITTAPE_WORD val)
 /// Perform a take write that ought to fail.
 /// @return success/failure indication
 ///
-/// @param[in] bit bit tape
-/// @param[in] cnt number of bits
+/// @param[in] tape bit tape
+/// @param[in] cnt  number of bits
 static bool
-fail_put(struct bittape* bit, const BITTAPE_LEN cnt)
+fail_put(struct bittape* tape, const BITTAPE_LEN cnt)
 {
   BITTAPE_WORD val;
   bool         ret;
 
   val = 0;
-  ret = bittape_put(bit, cnt, val);
+  ret = bittape_put(tape, cnt, val);
   if (ret == true) {
     (void)printf("put succeeded but was supposed to fail\n");
     return false;
@@ -108,9 +108,9 @@ fail_put(struct bittape* bit, const BITTAPE_LEN cnt)
 
 /// Pretty-print the contents of the tape.
 ///
-/// @param[in] bit bit tape
+/// @param[in] tape bit tape
 static void
-tape_str(const struct bittape* bit)
+tape_str(const struct bittape* tape)
 {
   uintmax_t idx;
   uintmax_t jdx;
@@ -121,7 +121,7 @@ tape_str(const struct bittape* bit)
     for (jdx = 0; jdx < sizeof(BITTAPE_WORD); jdx += 1) {
       // Convert a byte to a string.
       for (kdx = 0; kdx < CHAR_BIT; kdx += 1) {
-        str[kdx] = bit->bt_buf[idx] & ((BITTAPE_WORD)1 << (jdx * CHAR_BIT + kdx)) ? '1' : '0';
+        str[kdx] = tape->bt_buf[idx] & ((BITTAPE_WORD)1 << (jdx * CHAR_BIT + kdx)) ? '1' : '0';
       }
 
       // Print the string with a delimiter in the middle.
@@ -146,17 +146,17 @@ tape_str(const struct bittape* bit)
 int
 main(int argc, char* argv[])
 {
-  struct bittape bit;
+  struct bittape tape;
   uintmax_t      val;
   uintmax_t      cnt;
-  int            mtc;
+  int            mtch;
   int            opt;
   bool           ret;
 
   // Initialise the tape.
-  (void)memset(&bit, 0, sizeof(bit));
-  bittape_new(&bit, BITTAPE_BUF * BITTAPE_BIT);
-  tape_str(&bit);
+  (void)memset(&tape, 0, sizeof(tape));
+  bittape_new(&tape, BITTAPE_BUF * BITTAPE_BIT);
+  tape_str(&tape);
 
   while (true) {
     // Read the next command.
@@ -167,16 +167,16 @@ main(int argc, char* argv[])
 
     // Parse the command parameters.
     if (opt == 'p' || opt == 'g') {
-      mtc = sscanf(optarg, "%" SCNuMAX ":%" SCNuMAX, &cnt, &val);
-      if (mtc != 2) {
+      mtch = sscanf(optarg, "%" SCNuMAX ":%" SCNuMAX, &cnt, &val);
+      if (mtch != 2) {
         (void)printf("unable to parse the command parameters: '%s'\n", optarg);
         return EXIT_FAILURE;
       }
     }
 
     if (opt == 'P' || opt == 'G') {
-      mtc = sscanf(optarg, "%" SCNuMAX, &cnt);
-      if (mtc != 1) {
+      mtch = sscanf(optarg, "%" SCNuMAX, &cnt);
+      if (mtch != 1) {
         (void)printf("unable to parse the command parameter: '%s'\n", optarg);
         return EXIT_FAILURE;
       }
@@ -184,28 +184,28 @@ main(int argc, char* argv[])
 
     // Execute the appropriate command.
     if (opt == 'p') {
-      ret = succ_put(&bit, (BITTAPE_LEN)cnt, (BITTAPE_WORD)val);
+      ret = succ_put(&tape, (BITTAPE_LEN)cnt, (BITTAPE_WORD)val);
       if (ret == false) {
         return EXIT_FAILURE;
       }
     }
 
     if (opt == 'g') {
-      ret = succ_get(&bit, (BITTAPE_LEN)cnt, (BITTAPE_WORD)val);
+      ret = succ_get(&tape, (BITTAPE_LEN)cnt, (BITTAPE_WORD)val);
       if (ret == false) {
         return EXIT_FAILURE;
       }
     }
 
     if (opt == 'P') {
-      ret = fail_put(&bit, (BITTAPE_LEN)cnt);
+      ret = fail_put(&tape, (BITTAPE_LEN)cnt);
       if (ret == false) {
         return EXIT_FAILURE;
       }
     }
 
     if (opt == 'G') {
-      ret = fail_get(&bit, (BITTAPE_LEN)cnt);
+      ret = fail_get(&tape, (BITTAPE_LEN)cnt);
       if (ret == false) {
         return EXIT_FAILURE;
       }
@@ -213,7 +213,7 @@ main(int argc, char* argv[])
 
     // Print the tape if a successful write was performed.
     if (opt == 'p') {
-      tape_str(&bit);
+      tape_str(&tape);
     }
   }
 

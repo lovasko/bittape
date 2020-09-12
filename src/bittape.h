@@ -48,8 +48,8 @@ struct bittape {
 };
 
 // Operations.
-void bittape_new(struct bittape* bit, const BITTAPE_LEN max);
-bool bittape_put(struct bittape* bit, const BITTAPE_LEN cnt, const BITTAPE_WORD val);
-bool bittape_get(struct bittape* bit, const BITTAPE_LEN cnt, BITTAPE_WORD* val);
+void bittape_new(struct bittape* tape, const BITTAPE_LEN max);
+bool bittape_put(struct bittape* tape, const BITTAPE_LEN cnt, const BITTAPE_WORD val);
+bool bittape_get(struct bittape* tape, const BITTAPE_LEN cnt, BITTAPE_WORD* val);
 
 #endif
