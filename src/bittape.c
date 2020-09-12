@@ -30,10 +30,10 @@ bittape_new(struct bittape* tape, const BITTAPE_LEN max)
 /// Perform a write within a single word.
 ///
 /// @param[in] tape bit tape
-/// @param[in] val  word to write
 /// @param[in] cnt  number of bits
+/// @param[in] val  word to write
 static void
-put(struct bittape* tape, const BITTAPE_WORD val, const BITTAPE_LEN cnt)
+put(struct bittape* tape, const BITTAPE_LEN cnt, const BITTAPE_WORD val)
 {
   BITTAPE_LEN idx;
   BITTAPE_LEN off;
@@ -75,11 +75,11 @@ bittape_put(struct bittape* tape, const BITTAPE_LEN cnt, const BITTAPE_WORD val)
   spl = adj * (adj <= pos);
 
   // Perform the first write which always occurs.
-  put(tape, val, cnt - spl);
+  put(tape, cnt - spl, val);
 
   // Only perform the second write if any bits fall onto the second word.
   if (spl > 0) {
-    put(tape, val >> (cnt - spl), spl);
+    put(tape, spl, val >> (cnt - spl));
   }
 
   return true;
