@@ -184,28 +184,28 @@ main(int argc, char* argv[])
 
     // Execute the appropriate command.
     if (opt == 'p') {
-      ret = succ_put(&bit, (BITTAPE_INT)cnt, (BITTAPE_WORD)val);
+      ret = succ_put(&bit, (BITTAPE_LEN)cnt, (BITTAPE_WORD)val);
       if (ret == false) {
         return EXIT_FAILURE;
       }
     }
 
     if (opt == 'g') {
-      ret = succ_get(&bit, (BITTAPE_INT)cnt, (BITTAPE_WORD)val);
+      ret = succ_get(&bit, (BITTAPE_LEN)cnt, (BITTAPE_WORD)val);
       if (ret == false) {
         return EXIT_FAILURE;
       }
     }
 
     if (opt == 'P') {
-      ret = fail_put(&bit, (BITTAPE_INT)cnt);
+      ret = fail_put(&bit, (BITTAPE_LEN)cnt);
       if (ret == false) {
         return EXIT_FAILURE;
       }
     }
 
     if (opt == 'G') {
-      ret = fail_get(&bit, (BITTAPE_INT)cnt);
+      ret = fail_get(&bit, (BITTAPE_LEN)cnt);
       if (ret == false) {
         return EXIT_FAILURE;
       }
